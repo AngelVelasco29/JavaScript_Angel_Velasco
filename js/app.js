@@ -18,8 +18,9 @@ var division;
 var raiz;
 var sumres;
 var onc;
-var numero1="";
-var numero2="";
+var numero1=""
+var numero2=""
+var operador=""
 
 teclas=document.getElementsByClassName("tecla")
 pantalla=document.getElementById("display")
@@ -75,6 +76,7 @@ function borrar(){
 
 function sumaresta(){
 	sumres.style.padding="3px";
+	verificacion("-")
 	setTimeout(function(){
 		sumres.style.padding="0px";
 	},100);
@@ -89,6 +91,10 @@ function raizc(){
 
 function dividir(){
 	division.style.padding="3px";
+	numero2=numero1
+	numero1=""
+	pantalla.innerHTML=numero1
+	operador="/"
 	setTimeout(function(){
 		division.style.padding="0px";
 	},100);
@@ -120,6 +126,10 @@ function num9(){
 
 function multiplicar(){
 	multiplicacion.style.padding="3px";
+	numero2=numero1
+	numero1=""
+	pantalla.innerHTML=numero1
+	operador="*"
 	setTimeout(function(){
 	multiplicacion.style.padding="0px";
 	},100);
@@ -152,6 +162,10 @@ function num6(){
 
 function restar(){
 	resta.style.padding="3px";
+	numero2=numero1
+	numero1=""
+	pantalla.innerHTML=numero1
+	operador="-"
 	setTimeout(function(){
 	resta.style.padding="0px";
 	},100);
@@ -199,6 +213,22 @@ function puntod(){
 
 function iguala(){
 	igual.style.padding="3px";
+	switch (operador) {
+		case "+": numero1=Calculadora.sumar(Number(numero1),Number(numero2))
+			pantalla.innerHTML=numero1;
+			break;
+		case "-": numero1=Calculadora.restar(Number(numero1),Number(numero2))
+			pantalla.innerHTML=numero1;
+			break;
+		case "*": numero1=Calculadora.multiplicar(Number(numero1),Number(numero2))
+			pantalla.innerHTML=numero1;
+			break;
+		case "/": numero1=Calculadora.dividir(Number(numero1),Number(numero2))
+			pantalla.innerHTML=numero1;
+			break;
+		default:
+
+	}
 	setTimeout(function(){
 	igual.style.padding="0px";
 	},100);
@@ -206,6 +236,10 @@ function iguala(){
 
 function sumar(){
 	suma.style.padding="3px";
+	numero2=numero1
+	numero1=""
+	pantalla.innerHTML=numero1
+	operador="+"
 	setTimeout(function(){
 	suma.style.padding="0px";
 	},100);
@@ -218,7 +252,15 @@ function verificacion(numero){
 	}else{
 		tam=8
 	}
-	if (numero=="0"&&numero1=="") {
+	if(numero=="-"&&numero1==""){
+
+	}else if(numero1.includes("-")&&numero=="-"){
+		numero1=numero1.slice(1,9);
+		pantalla.innerHTML=numero1;
+	}else if(!numero1.includes("-")&&numero=="-"){
+		numero1="-"+numero1
+		pantalla.innerHTML=numero1;
+	}else	if (numero=="0"&&numero1=="") {
 
 	}else	if(numero=="."&&numero1==""){
 		numero1="0."
@@ -234,29 +276,36 @@ function verificacion(numero){
 
 
 var Calculadora=(function(){
-	var resultado=0
-	function actualizarResultado(nuevoResultado){
-		resultado=nuevoResultado
+
+	function configurar(resultadoNum) {
+		resultadoNum=resultadoNum.toPrecision(5)
+		resultadoNum=resultadoNum.toString()
+		console.log(resultadoNum)
+		return resultadoNum
 	}
+
 	return{
 		sumar: function(num1,num2){
-			var resultado=num1+num2
-			actualizarResultado(resultado)
+			resultado=num1+num2
+			configurar(resultado)
+			return resultado
 		},
 		restar: function(num1,num2){
-			var resultado=num1-num2
-			actualizarResultado(resultado)
+			resultado=num2-num1
+			configurar(resultado)
+			return resultado
 		},
 		multiplicar: function(num1,num2){
-			var resultado=num1*num2
-			actualizarResultado(resultado)
+			resultado=num1*num2
+			configurar(resultado)
+			return resultado
+
 		},
 		dividir: function(num1,num2){
-			var resultado=num1/num2
-			actualizarResultado(resultado)
-		},
-		resultado: function(){
+			resultado=num2/num1
+			configurar(resultado)
 			return resultado
+
 		}
 	}
 })();
