@@ -68,6 +68,7 @@ suma.onclick=sumar;
 function borrar(){
 	onc.style.padding="3px";
 	numero1="";
+	numero2="";
 	pantalla.innerHTML=0;
 	setTimeout(function(){
 		onc.style.padding="0px";
@@ -215,15 +216,19 @@ function iguala(){
 	igual.style.padding="3px";
 	switch (operador) {
 		case "+": numero1=Calculadora.sumar(Number(numero1),Number(numero2))
+			reducirNum(numero1)
 			pantalla.innerHTML=numero1;
 			break;
 		case "-": numero1=Calculadora.restar(Number(numero1),Number(numero2))
+	  	reducirNum(numero1)
 			pantalla.innerHTML=numero1;
 			break;
 		case "*": numero1=Calculadora.multiplicar(Number(numero1),Number(numero2))
+	  	reducirNum(numero1)
 			pantalla.innerHTML=numero1;
 			break;
 		case "/": numero1=Calculadora.dividir(Number(numero1),Number(numero2))
+		  reducirNum(numero1)
 			pantalla.innerHTML=numero1;
 			break;
 		default:
@@ -232,6 +237,20 @@ function iguala(){
 	setTimeout(function(){
 	igual.style.padding="0px";
 	},100);
+}
+var tam
+function reducirNum(reducir){
+	reducir=reducir.toString()
+	if(reducir.includes(".")&&reducir.includes("-")){
+		tam=10
+	}else if(reducir.includes(".")||reducir.includes("-")){
+		tam=9
+	}else{
+		tam=8
+	}
+	numero1=numero1.toString()
+	numero1=numero1.slice(0,tam)
+
 }
 
 function sumar(){
@@ -246,16 +265,13 @@ function sumar(){
 }
 
 function verificacion(numero){
-	var tam
-	if(numero1.includes(".")){
-		tam=9
-	}else{
-		tam=8
-	}
+	reducirNum(numero1)
+	numero1=numero1.toString()
+
 	if(numero=="-"&&numero1==""){
 
 	}else if(numero1.includes("-")&&numero=="-"){
-		numero1=numero1.slice(1,9);
+		numero1=numero1.slice(1,11);
 		pantalla.innerHTML=numero1;
 	}else if(!numero1.includes("-")&&numero=="-"){
 		numero1="-"+numero1
@@ -278,15 +294,12 @@ function verificacion(numero){
 var Calculadora=(function(){
 
 	function configurar(resultadoNum) {
-		resultadoNum=resultadoNum.toPrecision(5)
-		resultadoNum=resultadoNum.toString()
-		console.log(resultadoNum)
 		return resultadoNum
 	}
 
 	return{
 		sumar: function(num1,num2){
-			resultado=num1+num2
+			resultado=num2+num1
 			configurar(resultado)
 			return resultado
 		},
@@ -296,7 +309,7 @@ var Calculadora=(function(){
 			return resultado
 		},
 		multiplicar: function(num1,num2){
-			resultado=num1*num2
+			resultado=num2*num1
 			configurar(resultado)
 			return resultado
 
