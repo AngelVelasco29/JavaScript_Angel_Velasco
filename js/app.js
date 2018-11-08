@@ -20,7 +20,10 @@ var sumres;
 var onc;
 var numero1=""
 var numero2=""
+var numero3=""
 var operador=""
+var tam
+var igualarmas
 
 teclas=document.getElementsByClassName("tecla")
 pantalla=document.getElementById("display")
@@ -69,6 +72,7 @@ function borrar(){
 	onc.style.padding="3px";
 	numero1="";
 	numero2="";
+	numero3="";
 	pantalla.innerHTML=0;
 	setTimeout(function(){
 		onc.style.padding="0px";
@@ -92,6 +96,7 @@ function raizc(){
 
 function dividir(){
 	division.style.padding="3px";
+	igualarmas=0
 	numero2=numero1
 	numero1=""
 	pantalla.innerHTML=numero1
@@ -127,6 +132,7 @@ function num9(){
 
 function multiplicar(){
 	multiplicacion.style.padding="3px";
+	igualarmas=0
 	numero2=numero1
 	numero1=""
 	pantalla.innerHTML=numero1
@@ -163,6 +169,7 @@ function num6(){
 
 function restar(){
 	resta.style.padding="3px";
+	igualarmas=0
 	numero2=numero1
 	numero1=""
 	pantalla.innerHTML=numero1
@@ -214,7 +221,17 @@ function puntod(){
 
 function iguala(){
 	igual.style.padding="3px";
-	switch (operador) {
+	if(igualarmas==0){
+		numero3=numero1
+		numero1=numero2
+		numero2=numero3
+		numero3=numero2
+	}else{
+		numero2=numero3
+	}
+
+
+		switch (operador) {
 		case "+": numero1=Calculadora.sumar(Number(numero1),Number(numero2))
 			reducirNum(numero1)
 			pantalla.innerHTML=numero1;
@@ -237,8 +254,22 @@ function iguala(){
 	setTimeout(function(){
 	igual.style.padding="0px";
 	},100);
+	igualarmas=1
 }
-var tam
+
+function sumar(){
+	suma.style.padding="3px";
+	igualarmas=0
+	numero2=numero1
+	numero1=""
+	pantalla.innerHTML=numero1
+	operador="+"
+	setTimeout(function(){
+	suma.style.padding="0px";
+	},100);
+}
+
+
 function reducirNum(reducir){
 	reducir=reducir.toString()
 	if(reducir.includes(".")&&reducir.includes("-")){
@@ -251,17 +282,6 @@ function reducirNum(reducir){
 	numero1=numero1.toString()
 	numero1=numero1.slice(0,tam)
 
-}
-
-function sumar(){
-	suma.style.padding="3px";
-	numero2=numero1
-	numero1=""
-	pantalla.innerHTML=numero1
-	operador="+"
-	setTimeout(function(){
-	suma.style.padding="0px";
-	},100);
 }
 
 function verificacion(numero){
